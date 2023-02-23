@@ -13,8 +13,11 @@ import {
   InputRightElement,
   Link,
   ListIcon,
+  ListItem,
   Spacer,
   Stack,
+  Text,
+  UnorderedList,
   useBreakpointValue,
 } from "@chakra-ui/react";
 
@@ -22,7 +25,7 @@ import logo from "../assets/Image/chotuBazaar.png";
 
 import { GrCart } from "react-icons/gr";
 import { AiOutlineShoppingCart, AiOutlineTag } from "react-icons/ai";
-import { RiWechatLine } from "react-icons/ri";
+import { RiWechatLine, RiLinkedinFill } from "react-icons/ri";
 import { SlBriefcase } from "react-icons/sl";
 import { MdAppSettingsAlt, MdSettings } from "react-icons/md";
 import { BsShop } from "react-icons/bs";
@@ -30,7 +33,11 @@ import { HiOutlineCurrencyRupee } from "react-icons/hi";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { IconButton } from "@chakra-ui/react";
 import { BiSearch } from "react-icons/bi";
-import { CgProfile, CgSize } from "react-icons/cg";
+import { CgProfile, CgFacebook, CgTwitter, CgSize } from "react-icons/cg";
+import { IoLogoGoogleplus } from "react-icons/io";
+import { TfiYoutube, TfiMicrosoftAlt } from "react-icons/tfi";
+import { SiApple } from "react-icons/si";
+import { FaGooglePlay } from "react-icons/fa";
 
 const Navbar = () => {
   const isDesktop = useBreakpointValue({
