@@ -2,42 +2,29 @@ import {
   Box,
   Button,
   ButtonGroup,
-  Container,
   Flex,
   HStack,
-  Icon,
   Image,
   Input,
   InputGroup,
   InputRightAddon,
-  InputRightElement,
   Link,
-  ListIcon,
-  ListItem,
-  Spacer,
-  Stack,
   Text,
-  UnorderedList,
   useBreakpointValue,
 } from "@chakra-ui/react";
 
 import logo from "../assets/Image/chotuBazaar.png";
 
-import { GrCart } from "react-icons/gr";
 import { AiOutlineShoppingCart, AiOutlineTag } from "react-icons/ai";
-import { RiWechatLine, RiLinkedinFill } from "react-icons/ri";
+import { RiWechatLine } from "react-icons/ri";
 import { SlBriefcase } from "react-icons/sl";
-import { MdAppSettingsAlt, MdSettings } from "react-icons/md";
+import { MdAppSettingsAlt } from "react-icons/md";
 import { BsShop } from "react-icons/bs";
 import { HiOutlineCurrencyRupee } from "react-icons/hi";
 import { RxHamburgerMenu } from "react-icons/rx";
-import { IconButton } from "@chakra-ui/react";
 import { BiSearch } from "react-icons/bi";
-import { CgProfile, CgFacebook, CgTwitter, CgSize } from "react-icons/cg";
-import { IoLogoGoogleplus } from "react-icons/io";
-import { TfiYoutube, TfiMicrosoftAlt } from "react-icons/tfi";
-import { SiApple } from "react-icons/si";
-import { FaGooglePlay } from "react-icons/fa";
+import { CgProfile } from "react-icons/cg";
+import { Link as RouterLink } from "react-router-dom";
 
 const Navbar = () => {
   const isDesktop = useBreakpointValue({
@@ -132,13 +119,15 @@ const Navbar = () => {
                 gap={2}
               >
                 <RxHamburgerMenu size={30} cursor="pointer" />
-                <Image
-                  width={"200px"}
-                  objectFit="cover"
-                  src={logo}
-                  alt="chotu Bazaar"
-                  mr={"auto"}
-                />
+                <RouterLink to="/">
+                  <Image
+                    width={"200px"}
+                    objectFit="cover"
+                    src={logo}
+                    alt="chotu Bazaar"
+                    mr={"auto"}
+                  />
+                </RouterLink>
                 <InputGroup width={700} mr="auto">
                   <Input
                     borderColor="blue.300"
@@ -174,10 +163,31 @@ const Navbar = () => {
             lg: "5",
           }}
         >
-          <Link>MOBILES</Link>
-          <Link>ELECTRONICS</Link>
-          <Link>SPORTS</Link>
-          <Link>FURNITURE</Link>
+          <RouterLink to={"/products?category=jeweleries"}>
+            <Text _hover={{ textDecoration: "underline" }} fontWeight={"bold"}>
+              Jeweleries
+            </Text>
+          </RouterLink>
+          <RouterLink to={"/products?category=electronics"}>
+            <Text _hover={{ textDecoration: "underline" }} fontWeight={"bold"}>
+              Electronics
+            </Text>
+          </RouterLink>
+          <RouterLink to={"/products?category=men_clothes"}>
+            <Text _hover={{ textDecoration: "underline" }} fontWeight={"bold"}>
+              Men clothes
+            </Text>
+          </RouterLink>
+          <RouterLink to={"/products?category=women_clothes"}>
+            <Text _hover={{ textDecoration: "underline" }} fontWeight={"bold"}>
+              Women clothes
+            </Text>
+          </RouterLink>
+          <RouterLink to={"/productsx"}>
+            <Text _hover={{ textDecoration: "underline" }} fontWeight={"bold"}>
+              All Products
+            </Text>
+          </RouterLink>
         </Box>
       </Box>
     </>
