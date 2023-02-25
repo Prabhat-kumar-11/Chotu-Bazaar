@@ -183,7 +183,7 @@ const Navbar = () => {
               Women clothes
             </Text>
           </RouterLink>
-          <RouterLink to={"/productsx"}>
+          <RouterLink to={"/products"}>
             <Text _hover={{ textDecoration: "underline" }} fontWeight={"bold"}>
               All Products
             </Text>
