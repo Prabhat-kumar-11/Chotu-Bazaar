@@ -6,10 +6,16 @@ import "react-multi-carousel/lib/styles.css";
 // import './index.css'
 import { ChakraProvider } from "@chakra-ui/react";
 import { BrowserRouter } from "react-router-dom";
+import AuthContextProvider from "./context/AuthContextProvider";
+import LoginModalContextProvider from "./context/LoginModalContext";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <ChakraProvider>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <AuthContextProvider>
+      <LoginModalContextProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </LoginModalContextProvider>
+    </AuthContextProvider>
   </ChakraProvider>
 );

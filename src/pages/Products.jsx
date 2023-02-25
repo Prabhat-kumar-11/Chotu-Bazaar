@@ -11,7 +11,7 @@ import { Box, Divider, Grid, Heading, Stack, Text } from "@chakra-ui/layout";
 import { SkeletonCircle, SkeletonText } from "@chakra-ui/skeleton";
 import axios from "axios";
 import React, { useEffect, useReducer } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 function getProducts(category) {
   if (category) {
@@ -74,7 +74,6 @@ const Products = () => {
       .finally(() => dispatch({ type: "LOADING", payload: false }));
   }, [searchParams]);
 
-  
   if (state.isLoading) {
     return (
       <>
@@ -100,7 +99,7 @@ const Products = () => {
     );
   return (
     <Grid
-      templateColumns={{ base: "1fr", md: "1fr 1fr " ,lg:"1fr 1fr 1fr"}}
+      templateColumns={{ base: "1fr", md: "1fr 1fr ", lg: "1fr 1fr 1fr" }}
       placeItems="center"
       gap="10"
       my={5}
@@ -108,15 +107,29 @@ const Products = () => {
       {state.data?.map((product) => (
         <Card key={product.id} maxW="sm">
           <CardBody>
-            <Image
-              height={"sm"}
-              src={product.image}
-              alt="product"
-              borderRadius="lg"
-              mx="auto"
-            />
+            <Link to={`/products/${product.id}`} >
+              <Image
+                cursor={"pointer"}
+                height={"sm"}
+                src={product.image}
+                alt="product"
+                borderRadius="lg"
+                mx="auto"
+              />
+            </Link>
+
             <Stack mt="6" spacing="3">
-              <Heading textAlign="center" size="md">{product.title.substring(0, 40)}</Heading>
+              <Link to={`/products/${product.id}`} >
+                <Heading
+                  cursor={"pointer"}
+                  _hover={{ textDecoration: "underline" }}
+                  textAlign="center"
+                  size="md"
+                >
+                  {product.title.substring(0, 40)}
+                </Heading>
+              </Link>
+              
               <Text>{product.description.substring(0, 150)}</Text>
               <Text color="blue.600" fontSize="2xl">
                 $ {product.price}
@@ -126,10 +139,13 @@ const Products = () => {
           <Divider />
           <CardFooter>
             <ButtonGroup spacing="2">
-              <Button variant="solid" colorScheme="blue">
-                Buy now
-              </Button>
-              <Button variant="ghost" colorScheme="blue">
+              <Link to={`/products/${product.id}`} >
+                <Button cursor={"pointer"} variant="solid" colorScheme="blue">
+                  Buy now
+                </Button>
+              </Link>
+
+              <Button cursor={"pointer"} variant="ghost" colorScheme="blue">
                 Add to cart
               </Button>
             </ButtonGroup>
