@@ -25,12 +25,16 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { BiSearch } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
 import { Link as RouterLink } from "react-router-dom";
+import { useContext } from "react";
+import { LoginModalContext } from "../context/LoginModalContext";
 
 const Navbar = () => {
   const isDesktop = useBreakpointValue({
     base: false,
     lg: true,
   });
+
+  const { onOpen } = useContext(LoginModalContext);
   return (
     <>
       <Box as="section" boxShadow="md">
@@ -142,6 +146,7 @@ const Navbar = () => {
                   _hover={{ color: "black" }}
                   bg="bg-surface"
                   fontSize="xl"
+                  onClick={onOpen}
                   leftIcon={<CgProfile size={30} />}
                 >
                   Login/Register
