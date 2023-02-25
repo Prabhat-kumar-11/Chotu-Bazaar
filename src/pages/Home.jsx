@@ -13,7 +13,7 @@ const Home = () => {
   const [Products, setProducts] = useState([])
 
 useEffect(()=>{
- getFetch().then((res)=>{setProducts(res)})
+ getFetch().then((res)=>{setProducts(res.data)})
 },[])
 console.log(Products)
   return (
