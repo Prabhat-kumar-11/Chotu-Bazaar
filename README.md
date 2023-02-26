@@ -18,5 +18,5 @@ To get started with the project, clone the repository to your local machine.
 ## Author
  Prabhat Kumar
 
-##Acknowledgments
+## Acknowledgments
 Special thanks to Aashish Kumar for his guidance and support during the development of this project.
