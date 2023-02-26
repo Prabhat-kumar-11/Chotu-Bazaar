@@ -1,4 +1,4 @@
-import React, { useContext, useReducer, useState } from "react";
+import React, { useContext, useEffect, useReducer, useState } from "react";
 
 import {
   Modal,
@@ -13,47 +13,82 @@ import {
   FormLabel,
   Button,
   Text,
+  Progress,
 } from "@chakra-ui/react";
 import { LoginModalContext } from "../context/LoginModalContext";
-
-const initialState = {
-  token:null,
-  loading:false,
-  error:null,
-}
-
-function reducer(state, action) {
-  switch (action.type) {
-    case 'token':
-      return {...state,token:action.payload};
-    case 'loading':
-      return {...state,token:action.payload};
-      case 'error':
-      return {...state,error:action.payload};
-    default:
-      return {state}
-  }
-}
-
+import axios from "axios";
+import { AuthContext } from "../context/AuthContextProvider";
+import { useToast } from "@chakra-ui/react";
 
 const LoginModal = () => {
-  const [userName, setUserName] = useState();
-  const [password, setPassword] = useState();
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+  const toast = useToast();
 
- 
-
-  const [state,dispatch] =useReducer(reducer,initialState)
-
-  
+  const [isLoading, setIsLoading] = useState(false);
 
   const { isOpen, onClose } = useContext(LoginModalContext);
+  const { loginUser } = useContext(AuthContext);
   const firstField = React.useRef(null);
 
+  function getLogin() {
+    setIsLoading(true);
+    axios
+      .post("https://fakestoreapi.com/auth/login", {
+        username: userName,
+        password: password,
+      })
+      .then((response) => {
+        toast({
+          title: "Login Successful",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+          variant: "left-accent",
+          containerStyle: {
+            fontSize: "22",
+            lineHeight: "10",
+            py: "6",
+          },
+        });
+        loginUser(response.data);
+        setUserName("");
+        setPassword("");
+        onClose();
+      })
+      .catch((error) => {
+        toast({
+          title: error.response.data,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          variant: "left-accent",
+          containerStyle: {
+            fontSize: "22",
+            lineHeight: "10",
+            py: "6",
+          },
+        });
+      })
+      .finally(() => setIsLoading(false));
+  }
+
+  function handleLogin() {
+    getLogin();
+  }
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
+          {isLoading && (
+            <Progress
+              isIndeterminate
+              hasStripe={true}
+              isAnimated={true}
+              size="sm"
+            />
+          )}
           <ModalHeader>Login</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -67,27 +102,39 @@ const LoginModal = () => {
             <Box>
               <FormLabel htmlFor="username">Username</FormLabel>
               <Input
+                value={userName}
                 ref={firstField}
                 id="username"
                 placeholder="Enter you username to login"
                 autoComplete="off"
-                onClick={(e)=>{setUserName(e.target.value)}}
+                onChange={(e) => {
+                  setUserName(e.target.value);
+                }}
               />
               <FormLabel mt={4} htmlFor="password">
                 Password
               </FormLabel>
               <Input
+                value={password}
                 ref={firstField}
                 id="password"
                 autoComplete="off"
                 placeholder="Enter your Password"
-                onClick={(e)=>{}}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
               />
             </Box>
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue">Login</Button>
+            <Button
+              isDisabled={isLoading}
+              onClick={handleLogin}
+              colorScheme="blue"
+            >
+              Login
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

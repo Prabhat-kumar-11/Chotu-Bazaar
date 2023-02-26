@@ -1,4 +1,6 @@
 import {
+  Avatar,
+  Badge,
   Box,
   Button,
   ButtonGroup,
@@ -9,6 +11,11 @@ import {
   InputGroup,
   InputRightAddon,
   Link,
+  Menu,
+  MenuButton,
+  MenuGroup,
+  MenuItem,
+  MenuList,
   Text,
   useBreakpointValue,
 } from "@chakra-ui/react";
@@ -27,6 +34,7 @@ import { CgProfile } from "react-icons/cg";
 import { Link as RouterLink } from "react-router-dom";
 import { useContext } from "react";
 import { LoginModalContext } from "../context/LoginModalContext";
+import { AuthContext } from "../context/AuthContextProvider";
 
 const Navbar = () => {
   const isDesktop = useBreakpointValue({
@@ -35,6 +43,12 @@ const Navbar = () => {
   });
 
   const { onOpen } = useContext(LoginModalContext);
+  const {
+    authToken: { isAuth },
+    logoutUser,
+  } = useContext(AuthContext);
+
+  const { cartItems } = useContext(AuthContext);
   return (
     <>
       <Box as="section" boxShadow="md">
@@ -92,13 +106,20 @@ const Navbar = () => {
                       >
                         {"Discounts on Premium Ads"}
                       </Button>
-                      <Button
-                        _hover={{ color: "black" }}
-                        leftIcon={<AiOutlineShoppingCart />}
-                        fontSize="xl"
-                      >
-                        {"Cart"}
-                      </Button>
+                      <RouterLink to={"/cart"}>
+                        <Button
+                          _hover={{ color: "black" }}
+                          leftIcon={<AiOutlineShoppingCart />}
+                          fontSize="xl"
+                        >
+                          {"Cart"}
+                          {cartItems == 0 ? null : (
+                            <Badge colorScheme="purple">
+                              {cartItems.length}
+                            </Badge>
+                          )}
+                        </Button>
+                      </RouterLink>
                       <Button
                         _hover={{ color: "black" }}
                         leftIcon={<RiWechatLine />}
@@ -141,16 +162,36 @@ const Navbar = () => {
                     <BiSearch />
                   </InputRightAddon>
                 </InputGroup>
-                <Button
-                  color={"gray.500"}
-                  _hover={{ color: "black" }}
-                  bg="bg-surface"
-                  fontSize="xl"
-                  onClick={onOpen}
-                  leftIcon={<CgProfile size={30} />}
-                >
-                  Login/Register
-                </Button>
+                {isAuth ? (
+                  <>
+                    <Menu>
+                      <MenuButton cursor="pointer" as={Box}>
+                        <Avatar
+                          cursor={"pointer"}
+                          size="md"
+                          name="Kent Dodds"
+                          src="https://bit.ly/kent-c-dodds"
+                        />
+                      </MenuButton>
+                      <MenuList>
+                        <MenuGroup title="Profile">
+                          <MenuItem onClick={logoutUser}>Log out</MenuItem>
+                        </MenuGroup>
+                      </MenuList>
+                    </Menu>
+                  </>
+                ) : (
+                  <Button
+                    color={"gray.500"}
+                    _hover={{ color: "black" }}
+                    bg="bg-surface"
+                    fontSize="xl"
+                    onClick={onOpen}
+                    leftIcon={<CgProfile size={30} />}
+                  >
+                    Login/Register
+                  </Button>
+                )}
               </Box>
             </Box>
           </Box>
