@@ -10,8 +10,9 @@ import { Image } from "@chakra-ui/image";
 import { Badge, Box, Heading, Stack, Text } from "@chakra-ui/layout";
 import { SkeletonCircle, SkeletonText } from "@chakra-ui/skeleton";
 import axios from "axios";
-import React, { useEffect, useReducer } from "react";
+import React, { useContext, useEffect, useReducer } from "react";
 import { useParams } from "react-router";
+import { AuthContext } from "../context/AuthContextProvider";
 
 function getProducts(id) {
   if (id) {
@@ -42,6 +43,7 @@ function reducer(state, action) {
 export const SingleProduct = () => {
   const { id } = useParams();
   const [state, dispatch] = useReducer(reducer, initialState);
+  const { addCartItem } = useContext(AuthContext);
 
   useEffect(() => {
     dispatch({ type: "LOADING", payload: true });
@@ -50,8 +52,6 @@ export const SingleProduct = () => {
       .catch((err) => dispatch({ type: "ERROR", payload: err }))
       .finally(() => dispatch({ type: "LOADING", payload: false }));
   }, [id]);
-
-  
 
   if (state.isLoading) {
     return (
@@ -76,42 +76,63 @@ export const SingleProduct = () => {
         </Alert>
       </>
     );
-  return (<Box display={"flex"} justifyContent={"center"}>
- <Card
-    direction={{ base: 'column', sm: 'row' }}
-    overflow='hidden'
-    variant='outline'
-    my={"20px"}
-    width={"700px"}
-  >
-    <Image
-      // objectFit='cover'
-      // maxW={{ base: '100%', sm: '200px' }}
-      width={"400px"}
-      src= {state.data?.image}
-      alt='product'
-    />
-  
-    <Stack>
-      <CardBody>
-        <Heading size='md'>{state.data?.title}</Heading>
-  
-        <Text py='2'>
-        {state.data?.description}
-        </Text>
-        <Badge colorScheme='green'>Rate  {state.data?.rating.rate}</Badge>
-        <Badge colorScheme='purple'>{state.data?.rating.count}</Badge>
-      </CardBody>
-  
-      <CardFooter>
-      
-        <Button variant='solid' colorScheme='blue'>
-        $ {state.data?.price}
-        </Button>
-      </CardFooter>
-    </Stack>
-  </Card>
-  </Box>
-    
+  return (
+    <Box display={"flex"} justifyContent={"center"}>
+      <Card
+        direction={{ base: "column", sm: "row" }}
+        overflow="hidden"
+        variant="outline"
+        my={"20px"}
+        width={"700px"}
+      >
+        <Image
+          // objectFit='cover'
+          // maxW={{ base: '100%', sm: '200px' }}
+          width={"400px"}
+          src={state.data?.image}
+          alt="product"
+        />
+
+        <Stack>
+          <CardBody>
+            <Heading size="md">{state.data?.title}</Heading>
+
+            <Text py="2">{state.data?.description}</Text>
+            <Badge colorScheme="green">Rate {state.data?.rating.rate}</Badge>
+            <Badge colorScheme="purple">{state.data?.rating.count}</Badge>
+            <Text
+              my={"10px"}
+              fontSize={"3xl"}
+              fontWeight={"Bold"}
+              color="blue.600"
+            >
+              {" "}
+              $ {state.data?.price}
+            </Text>
+          </CardBody>
+
+          <CardFooter gap={"10px"}>
+            <Button variant="solid" colorScheme="blue">
+              Buy Now
+            </Button>
+            <Button
+              onClick={() =>
+                addCartItem({
+                  id: state?.data.id,
+                  title: state?.data.title,
+                  price: state?.data.price,
+                  image: state?.data.image,
+                  quantity: 1,
+                })
+              }
+              variant="solid"
+              colorScheme="green"
+            >
+              Add to cart
+            </Button>
+          </CardFooter>
+        </Stack>
+      </Card>
+    </Box>
   );
 };

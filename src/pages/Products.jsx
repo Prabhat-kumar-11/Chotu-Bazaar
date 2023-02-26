@@ -10,8 +10,9 @@ import { Image } from "@chakra-ui/image";
 import { Box, Divider, Grid, Heading, Stack, Text } from "@chakra-ui/layout";
 import { SkeletonCircle, SkeletonText } from "@chakra-ui/skeleton";
 import axios from "axios";
-import React, { useEffect, useReducer } from "react";
+import React, { useContext, useEffect, useReducer } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import { AuthContext } from "../context/AuthContextProvider";
 
 function getProducts(category) {
   if (category) {
@@ -63,6 +64,7 @@ function reducer(state, action) {
 const Products = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [state, dispatch] = useReducer(reducer, initialState);
+  const { addCartItem } = useContext(AuthContext);
 
   const category = searchParams.get("category");
 
@@ -107,7 +109,7 @@ const Products = () => {
       {state.data?.map((product) => (
         <Card key={product.id} maxW="sm">
           <CardBody>
-            <Link to={`/products/${product.id}`} >
+            <Link to={`/products/${product.id}`}>
               <Image
                 cursor={"pointer"}
                 height={"sm"}
@@ -119,7 +121,7 @@ const Products = () => {
             </Link>
 
             <Stack mt="6" spacing="3">
-              <Link to={`/products/${product.id}`} >
+              <Link to={`/products/${product.id}`}>
                 <Heading
                   cursor={"pointer"}
                   _hover={{ textDecoration: "underline" }}
@@ -129,7 +131,7 @@ const Products = () => {
                   {product.title.substring(0, 40)}
                 </Heading>
               </Link>
-              
+
               <Text>{product.description.substring(0, 150)}</Text>
               <Text color="blue.600" fontSize="2xl">
                 $ {product.price}
@@ -139,13 +141,25 @@ const Products = () => {
           <Divider />
           <CardFooter>
             <ButtonGroup spacing="2">
-              <Link to={`/products/${product.id}`} >
+              <Link to={`/products/${product.id}`}>
                 <Button cursor={"pointer"} variant="solid" colorScheme="blue">
                   Buy now
                 </Button>
               </Link>
 
-              <Button cursor={"pointer"} variant="ghost" colorScheme="blue">
+              <Button
+                onClick={() =>
+                  addCartItem({
+                    id: product.id,
+                    title: product.title,
+                    price: product.price,
+                    image: product.image,
+                    quantity: 1,
+                  })
+                }
+                cursor={"pointer"}
+                colorScheme="green"
+              >
                 Add to cart
               </Button>
             </ButtonGroup>
