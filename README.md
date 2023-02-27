@@ -13,7 +13,6 @@ To get started with the project, clone the repository to your local machine.
 - JavaScript
 ## Backend
 - Local Storage
-- JSON File
 - Mock API
 ## Author
  Prabhat Kumar
