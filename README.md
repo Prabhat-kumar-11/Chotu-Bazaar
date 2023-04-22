@@ -4,7 +4,7 @@ ChotuBazaar is an e-commerce website that specializes in offering a variety of p
 ## Getting Started
 To get started with the project, clone the repository to your local machine.
 
-## Deployed Link: https://app.netlify.com/sites/chotubazaar/overview
+## Deployed Link: https://chotubazaar.netlify.app/
 
 # Built With
 ## Frontend
